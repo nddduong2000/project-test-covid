@@ -19,6 +19,8 @@ export class AppComponent implements OnInit {
   codeOne: any;
   codeTwo: any;
   bsValue: any;
+  address: any;
+  addressInput: any;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -34,7 +36,10 @@ export class AppComponent implements OnInit {
       bhyt: ['', [Validators.minLength(7), Validators.maxLength(20)]]
     })
   }
-
+  changeAddr() {
+    this.addressInput = this.address;
+    console.log(this.addressInput);
+  }
   get f(): any {
     return this.inputForm.controls;
   }
