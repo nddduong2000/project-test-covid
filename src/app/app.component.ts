@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validator, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validator, Validators} from "@angular/forms";
 import * as moment from 'moment/moment.js';
+import {defineLocale, itLocale} from "ngx-bootstrap/chronos";
 
 declare var $: any;
 
@@ -17,6 +18,7 @@ export class AppComponent implements OnInit {
   dateTwo: any;
   codeOne: any;
   codeTwo: any;
+  bsValue: any;
 
   constructor(
     public formBuilder: FormBuilder,
@@ -28,24 +30,21 @@ export class AppComponent implements OnInit {
       name: ['', [Validators.required]],
       phoneNumber: ['', [Validators.required, Validators.pattern("[0-9]{10}")]],
       gioiTinh: ['Nam'],
-      datePicker: ['', [Validators.required]],
       cccd: ['', [Validators.minLength(7), Validators.maxLength(20)]],
       bhyt: ['', [Validators.minLength(7), Validators.maxLength(20)]]
     })
-
   }
 
   get f(): any {
     return this.inputForm.controls;
   }
 
-  onChange(event: any) {
-    const date = moment(event.target.value).format('DD/MM/YYYY')
-    this.f.datePicker.value = (date);
+  changeDate(event: any) {
+    if (event) {
+      this.bsValue = moment(event).format('DD/MM/YYYY');
+    }
   }
-
   searchInfor() {
-
     if (this.inputForm.invalid) {
       this.isShowInfor = false;
     } else {
