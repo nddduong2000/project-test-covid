@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validator, Validators} from "@angular/forms";
 import * as moment from 'moment/moment.js';
 import {defineLocale, itLocale} from "ngx-bootstrap/chronos";
+import {Router} from "@angular/router";
 
 declare var $: any;
 
@@ -13,6 +14,7 @@ declare var $: any;
 export class AppComponent implements OnInit {
   title = 'my-project';
   inputForm!: FormGroup;
+  loginForm!: FormGroup;
   isShowInfor = false;
   dateOne: any;
   dateTwo: any;
@@ -21,9 +23,11 @@ export class AppComponent implements OnInit {
   bsValue: any;
   address: any;
   addressInput: any;
+  isLogin = false;
+  userName: any;
 
   constructor(
-    public formBuilder: FormBuilder,
+    public formBuilder: FormBuilder
   ) {
   }
 
@@ -35,14 +39,22 @@ export class AppComponent implements OnInit {
       cccd: ['', [Validators.minLength(7), Validators.maxLength(20)]],
       bhyt: ['', [Validators.minLength(7), Validators.maxLength(20)]]
     })
+    this.loginForm = this.formBuilder.group({
+      phoneRegis: ['', [Validators.required]],
+      pass: ['', [Validators.required]]
+    })
+    this.getDateUser();
   }
   changeAddr() {
     this.addressInput = this.address;
-    console.log(this.addressInput);
   }
   get f(): any {
     return this.inputForm.controls;
   }
+  get lf(): any {
+    return this.loginForm.controls;
+  }
+
 
   changeDate(event: any) {
     if (event) {
@@ -87,5 +99,21 @@ export class AppComponent implements OnInit {
       this.codeOne = `${getRandomHex2()}`;
       this.codeTwo = `${getRandomHex2()}`;
     }
+  }
+  login() {
+    this.isLogin = true;
+  }
+  doLogin() {
+    if (!this.lf.phoneRegis.value || !this.lf.pass.value) {
+      this.isLogin = true;
+    } else {
+      this.isLogin = false;
+      localStorage.setItem('inforUser', JSON.stringify(this.lf.phoneRegis.value));
+      this.getDateUser();
+    }
+  }
+  getDateUser() {
+    this.userName = localStorage.getItem('inforUser');
+    console.log('------userName', this.userName)
   }
 }
